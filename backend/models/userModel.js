@@ -1,5 +1,21 @@
 const mongoose = require("mongoose");
 
+const budgetEntrySchema = new mongoose.Schema({
+  date: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  transactionName: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -22,6 +38,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  budgetEntries: [budgetEntrySchema],
 });
 
 module.exports = mongoose.model("User", userSchema);
