@@ -17,7 +17,7 @@ const registerController = async (req, res) => {
       confirmPassword,
       budgetLimit,
     } = req.body;
-
+    console.log("Received data:", req.body);
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords don't match" });
     }
