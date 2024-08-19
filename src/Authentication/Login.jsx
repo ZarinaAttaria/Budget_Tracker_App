@@ -1,10 +1,12 @@
 import { useState } from "react";
 import "../App.css";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,8 +18,10 @@ function Login() {
           password,
         }
       );
+      localStorage.setItem("token", response.data.token);
       alert(response.data.message || "Login Successfull");
       console.log("Login Successfull", response.data);
+      navigate("/budgetPage");
     } catch (error) {
       alert(error.response?.data?.message || "Login Unsuccessful");
       console.error("Login Error", error);

@@ -57,38 +57,59 @@ const loginController = async (req, res) => {
     const user = await userModel.findOne({ email });
 
     if (!user) {
-      res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const payload = { user: { id: user.id } };
     const token = jwt.sign(payload, secretKey, { expiresIn: "12h" });
-    res.status(200).json({ token });
+    return res.status(200).json({ token });
   } catch (error) {
     console.error("Login Error:", error);
-    res.status(500).json({ error: "Failed to Login", details: error.message });
+    return res
+      .status(500)
+      .json({ error: "Failed to Login", details: error.message });
   }
 };
 
 const addBudget = async (req, res) => {
   try {
-    const { userId, date, transactionName, amount } = req.body;
+    const { date, transactionName, amount } = req.body;
+    console.log("Received data for add-budget:", req.body);
+    const token = req.header("Authorization")?.replace("Bearer ", "").trim();
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "No token, authorization denied" });
+    }
+
+    const decoded = jwt.verify(token, secretKey);
+    const userId = decoded.user.id;
+
     let user = await userModel.findById(userId);
 
     if (!user) {
-      res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
-
+    const totalAmount = user.budgetEntries.reduce(
+      (sum, entry) => sum + entry.amount,
+      0
+    );
+    if (totalAmount + amount > user.budgetLimit) {
+      res.status(400).json({ message: "Budget limit exceeded!" });
+    }
     const budgetEntry = {
       date,
       transactionName,
       amount,
     };
-    user.budgetEntries.push(budgetEntry);
 
+    user.budgetEntries.push(budgetEntry);
     await user.save();
 
     res.status(200).json({ budgetEntries: user.budgetEntries });
@@ -102,12 +123,23 @@ const addBudget = async (req, res) => {
 
 const getAllBudget = async (req, res) => {
   try {
-    let users = await userModel.find();
-    const allBudgetEnteries = users.flatMap((user) => user.budgetEntries);
-    res.status(200).json({ budgetEntries: allBudgetEnteries });
+    const token = req.header("Authorization")?.replace("Bearer ", "").trim();
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "No token, authorization denied" });
+    }
+    const decoded = jwt.verify(token, secretKey);
+    const userId = decoded.user.id;
+
+    let user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    return res.status(200).json({ budgetEntries: user.budgetEntries });
   } catch (error) {
     console.error("Get Budget Entries Error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       error: "Failed to get budget entries",
       details: error.message,
     });

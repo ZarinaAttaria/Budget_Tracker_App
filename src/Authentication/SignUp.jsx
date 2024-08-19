@@ -27,6 +27,7 @@ function SignUp() {
           budgetLimit,
         }
       );
+
       alert(response.data.message || "User Registered Successfully");
       console.log("User Registered Successfully", response.data);
       navigate("/login");
