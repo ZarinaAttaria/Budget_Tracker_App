@@ -33,7 +33,7 @@ function BudgetPage() {
       }
     };
     fetchAllBudgetEntries();
-  }, [token, budgetName, date, amount]);
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
