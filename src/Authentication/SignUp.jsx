@@ -2,7 +2,8 @@ import { useState } from "react";
 import "../App.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
-
+import { Link } from "react-router-dom";
+import "./Signup.css";
 function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -39,57 +40,66 @@ function SignUp() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First Name"
-          />
-        </label>
-        <label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder=" Last Name"
-          />
-        </label>
-        <label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-        </label>
-        <label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-        </label>
-        <label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password"
-          />
-        </label>
-        <label>
-          <input
-            type="number"
-            value={budgetLimit}
-            onChange={(e) => setBudgetLimit(e.target.value)}
-            placeholder=" Budget Limit"
-          />
-        </label>
-        <input type="submit" />
-      </form>
+      <div className="SignUpContainer">
+        <div className="signUpContainer1">
+          {/* <img src="signUpImage.png" /> */}
+          <Link to="/login">Already have an account?</Link>
+          <h1>Sign Up</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="signUpForm">
+              <label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="First Name"
+                />
+              </label>
+              <label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder=" Last Name"
+                />
+              </label>
+              <label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                />
+              </label>
+              <label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                />
+              </label>
+              <label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm Password"
+                />
+              </label>
+              <label>
+                <input
+                  type="number"
+                  value={budgetLimit}
+                  onChange={(e) => setBudgetLimit(e.target.value)}
+                  placeholder=" Budget Limit"
+                />
+              </label>
+              <input type="Submit" className="SignUpButton" />
+            </div>
+          </form>
+        </div>
+      </div>
     </>
   );
 }

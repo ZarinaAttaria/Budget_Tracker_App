@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import "../App.css";
 import axios from "axios";
+import "../App.css";
 
 function BudgetPage() {
   const [budget, setBudget] = useState([]);
@@ -8,33 +8,29 @@ function BudgetPage() {
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [isEditing, setIsEditing] = useState(false);
-  const [entryId, setEntryId] = useState("");
-  const [filteredBudget, setFilteredBudget] = useState([]);
-  const [filterDate, setFilterDate] = useState("");
+  const [editEntryId, setEditEntryId] = useState(null);
 
   const token = localStorage.getItem("token");
 
-  const fetchAllBudgetEntries = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/auth/getAllBudget`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setBudget(response.data.budgetEntries);
-      setFilteredBudget(response.data.budgetEntries);
-    } catch (error) {
-      alert(
-        error.response?.data?.message || "Unable to get all budget entries"
-      );
-      console.error("Error in getting all budget entries", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchAllBudgetEntries = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/auth/getAllBudget`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setBudget(response.data.budgetEntries);
+      } catch (error) {
+        alert(
+          error.response?.data?.message || "Unable to get all budget entries"
+        );
+        console.error("Error in getting all budget Entries", error);
+      }
+    };
     fetchAllBudgetEntries();
   }, [token]);
 
@@ -42,8 +38,8 @@ function BudgetPage() {
     e.preventDefault();
     try {
       if (isEditing) {
-        const response = await axios.put(
-          `http://localhost:3000/api/auth/update-budget/${entryId}`,
+        await axios.put(
+          `http://localhost:3000/api/auth/update-budget/${editEntryId}`,
           {
             date,
             transactionName: budgetName,
@@ -55,7 +51,8 @@ function BudgetPage() {
             },
           }
         );
-        alert(response.data.message || "Budget Updated Successfully");
+
+        alert("Budget updated successfully");
       } else {
         const response = await axios.post(
           `http://localhost:3000/api/auth/add-budget`,
@@ -70,14 +67,36 @@ function BudgetPage() {
             },
           }
         );
+
         alert(response.data.message || "Budget Added Successfully");
       }
+
+      // Reset form and state
       setBudgetName("");
       setDate("");
       setAmount("");
       setIsEditing(false);
-      setEntryId(null);
+      setEditEntryId(null);
 
+      // Refresh budget entries
+      const fetchAllBudgetEntries = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/api/auth/getAllBudget`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setBudget(response.data.budgetEntries);
+        } catch (error) {
+          alert(
+            error.response?.data?.message || "Unable to get all budget entries"
+          );
+          console.error("Error in getting all budget Entries", error);
+        }
+      };
       fetchAllBudgetEntries();
     } catch (error) {
       alert(error.response?.data?.message || "Unable to add/update budget");
@@ -87,15 +106,15 @@ function BudgetPage() {
 
   const handleEdit = (entry) => {
     setBudgetName(entry.transactionName);
-    setDate(entry.date.split("T")[0]);
+    setDate(entry.date.split("T")[0]); // Format date as YYYY-MM-DD
     setAmount(entry.amount);
     setIsEditing(true);
-    setEntryId(entry._id);
+    setEditEntryId(entry._id);
   };
 
   const handleDelete = async (entryId) => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `http://localhost:3000/api/auth/delete-budget/${entryId}`,
         {
           headers: {
@@ -103,42 +122,37 @@ function BudgetPage() {
           },
         }
       );
-      alert(response.data.message || "Budget Entry Deleted Successfully");
 
+      alert("Budget Entry deleted successfully");
+
+      // Refresh budget entries
+      const fetchAllBudgetEntries = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/api/auth/getAllBudget`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setBudget(response.data.budgetEntries);
+        } catch (error) {
+          alert(
+            error.response?.data?.message || "Unable to get all budget entries"
+          );
+          console.error("Error in getting all budget Entries", error);
+        }
+      };
       fetchAllBudgetEntries();
     } catch (error) {
-      alert(error.response?.data?.message || "Unable to delete budget entry");
-      console.error("Error in deleting budget entry", error);
-    }
-  };
-
-  const handleFilterByDate = (e) => {
-    e.preventDefault();
-    if (filterDate) {
-      const filterByDate = budget.filter(
-        (b) => b.date.split("T")[0] === filterDate
-      );
-      setFilteredBudget(filterByDate);
-    } else {
-      setFilteredBudget(budget);
+      alert(error.response?.data?.message || "Unable to delete budget");
+      console.error("Error in deleting budget", error);
     }
   };
 
   return (
     <>
-      <form onSubmit={handleFilterByDate}>
-        <label>
-          <input
-            type="date"
-            value={filterDate}
-            onChange={(e) => setFilterDate(e.target.value)}
-            placeholder="Enter Date"
-          />
-        </label>
-
-        <input type="submit" value="Filter" />
-      </form>
-
       <table>
         <thead>
           <tr>
@@ -149,11 +163,11 @@ function BudgetPage() {
           </tr>
         </thead>
         <tbody>
-          {filteredBudget.map((b) => (
+          {budget.map((b) => (
             <tr key={b._id}>
               <td>{b.transactionName}</td>
               <td>{b.amount}</td>
-              <td>{b.date.split("T")[0]}</td>
+              <td>{b.date}</td>
               <td>
                 <button onClick={() => handleEdit(b)}>Edit</button>
                 <button onClick={() => handleDelete(b._id)}>Delete</button>

@@ -148,7 +148,16 @@ const getAllBudget = async (req, res) => {
 
 const updateBudget = async (req, res) => {
   try {
-    const { userId, entryId } = req.params;
+    const { entryId } = req.params;
+    const token = req.header("Authorization")?.replace("Bearer ", "").trim();
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "No token, authorization denied" });
+    }
+    const decoded = jwt.verify(token, secretKey);
+    const userId = decoded.user.id;
+
     const { date, transactionName, amount } = req.body;
     const user = await userModel.findById(userId);
     if (!user) {
@@ -162,6 +171,13 @@ const updateBudget = async (req, res) => {
     if (date) budgetEntry.date = date;
     if (transactionName) budgetEntry.transactionName = transactionName;
     if (amount) budgetEntry.amount = amount;
+    const totalAmount = user.budgetEntries.reduce(
+      (sum, entry) => sum + entry.amount,
+      0
+    );
+    if (totalAmount + amount > user.budgetLimit) {
+      res.status(400).json({ message: "Budget limit exceeded!" });
+    }
 
     await user.save();
     res
@@ -178,7 +194,15 @@ const updateBudget = async (req, res) => {
 
 const deleteBudget = async (req, res) => {
   try {
-    const { userId, entryId } = req.params;
+    const { entryId } = req.params;
+    const token = req.header("Authorization")?.replace("Bearer ", "").trim();
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "No token, authorization denied" });
+    }
+    const decoded = jwt.verify(token, secretKey);
+    const userId = decoded.user.id;
     const user = await userModel.findById(userId);
     if (!user) {
       res.json(400).json({ message: "User not found" });
