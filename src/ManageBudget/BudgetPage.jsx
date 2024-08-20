@@ -14,6 +14,9 @@ function BudgetPage() {
   const [filteredBudget, setFilteredBudget] = useState([]);
   const [filterDate, setFilterDate] = useState("");
   const [isAddBudget, setIsAddBudget] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = useState(5);
   const token = localStorage.getItem("token");
 
   const fetchAllBudgetEntries = async () => {
@@ -90,6 +93,8 @@ function BudgetPage() {
   };
 
   const handleEdit = (entry) => {
+    setIsAddBudget(!isAddBudget);
+
     setBudgetName(entry.transactionName);
     setDate(entry.date.split("T")[0]);
     setAmount(entry.amount);
@@ -133,7 +138,18 @@ function BudgetPage() {
   };
   const toggleAddBudget = () => {
     setIsAddBudget(!isAddBudget);
+    if (!isAddBudget) {
+      setBudgetName("");
+      setDate("");
+      setAmount("");
+      setIsEditing(false);
+      setEntryId("");
+    }
   };
+  const toggleDropdown = (id) => {
+    setActiveDropdown(activeDropdown === id ? null : id);
+  };
+
   return (
     <>
       <div>
@@ -179,9 +195,24 @@ function BudgetPage() {
                   <td>{b.transactionName}</td>
                   <td>{b.amount}</td>
                   <td>{b.date.split("T")[0]}</td>
+
                   <td>
-                    <button onClick={() => handleEdit(b)}>Edit</button>
-                    <button onClick={() => handleDelete(b._id)}>Delete</button>
+                    <div className="actionsDropdown">
+                      <button
+                        className="actionsButton"
+                        onClick={() => toggleDropdown(b._id)}
+                      >
+                        ⋮
+                      </button>
+                      {activeDropdown === b._id && (
+                        <div className="actionsMenu">
+                          <button onClick={() => handleEdit(b)}>Edit</button>
+                          <button onClick={() => handleDelete(b._id)}>
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -197,7 +228,7 @@ function BudgetPage() {
             <form onSubmit={handleSubmit}>
               <div className="addFormContainer">
                 <div className="addBudgetTop">
-                  <h2>Add Budget</h2>
+                  <h2>{isEditing ? "Update Budget" : "Add Budget"}</h2>
                   <img
                     src="icons8-cross-50.png"
                     className="crossIcon"
@@ -221,6 +252,7 @@ function BudgetPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Amount"
+                    min="0"
                   />
                 </label>
                 <label>

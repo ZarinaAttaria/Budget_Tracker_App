@@ -108,3 +108,35 @@
   display: flex;
   justify-content: space-between;
 }
+.actionsDropdown {
+  position: relative;
+  display: inline-block;
+}
+.actionsButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+  margin: 0;
+}
+.actionsMenu {
+  position: absolute;
+  right: 0;
+  background-color: white;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  min-width: 100px;
+}
+
+.actionsMenu button {
+  background: none;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+.actionsMenu button:hover {
+  background-color: #f1f1f1;
+}

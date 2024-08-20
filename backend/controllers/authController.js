@@ -79,7 +79,12 @@ const loginController = async (req, res) => {
 const addBudget = async (req, res) => {
   try {
     const { date, transactionName, amount } = req.body;
-    console.log("Received data for add-budget:", req.body);
+    console.log("Received data for add-budget:", {
+      date,
+      transactionName,
+      amount,
+    });
+
     const token = req.header("Authorization")?.replace("Bearer ", "").trim();
 
     if (!token) {
@@ -96,17 +101,22 @@ const addBudget = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
+
+    const numericAmount = Number(amount);
+
     const totalAmount = user.budgetEntries.reduce(
       (sum, entry) => sum + entry.amount,
       0
     );
-    if (totalAmount + amount > user.budgetLimit) {
-      res.status(400).json({ message: "Budget limit exceeded!" });
+
+    if (totalAmount + numericAmount > user.budgetLimit) {
+      return res.status(400).json({ message: "Budget limit exceeded!" });
     }
+
     const budgetEntry = {
       date,
       transactionName,
-      amount,
+      amount: numericAmount,
     };
 
     user.budgetEntries.push(budgetEntry);
@@ -161,22 +171,24 @@ const updateBudget = async (req, res) => {
     const { date, transactionName, amount } = req.body;
     const user = await userModel.findById(userId);
     if (!user) {
-      res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
 
     const budgetEntry = await user.budgetEntries.id(entryId);
     if (!budgetEntry) {
-      res.status(400).json({ message: "Budget entry not found" });
+      return res.status(400).json({ message: "Budget entry not found" });
     }
     if (date) budgetEntry.date = date;
     if (transactionName) budgetEntry.transactionName = transactionName;
     if (amount) budgetEntry.amount = amount;
+
+    const numericAmount = Number(amount);
     const totalAmount = user.budgetEntries.reduce(
       (sum, entry) => sum + entry.amount,
       0
     );
-    if (totalAmount + amount > user.budgetLimit) {
-      res.status(400).json({ message: "Budget limit exceeded!" });
+    if (totalAmount + numericAmount > user.budgetLimit) {
+      return res.status(400).json({ message: "Budget limit exceeded!" });
     }
 
     await user.save();

@@ -20,7 +20,7 @@
   flex-direction: column;
   margin-top: 3%;
   background-color: white;
-  width: 50%;
+  width: 110vh;
   height: 50%;
   border-radius: 1%;
 }
@@ -47,4 +47,22 @@ input:focus {
 }
 .loginLink {
   color: black;
+}
+@media (min-width: 1300px) {
+  .SignUpContainer {
+    width: 85vh;
+  }
+}
+@media (max-width: 768px) {
+  .signUpContainer1 {
+    width: 450px;
+  }
+  .SignUpContainer {
+    align-items: center;
+    margin-left: 100px;
+    margin-right: 10px;
+  }
+  .input {
+    width: 100%;
+  }
 }
