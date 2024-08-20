@@ -3,12 +3,49 @@
   flex-direction: column;
 }
 .SignUpButton {
-  height: auto;
-  width: 50%;
+  height: 30px;
+  width: 150px;
+  background-color: rgb(231, 184, 15);
+  border: none;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+.mainSignUpContainer {
+  display: flex;
+  background-color: rgb(199, 214, 214);
+  justify-content: center;
+  align-items: center;
 }
 .SignUpContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin-top: 10%;
+  background-color: white;
+  width: 50%;
+  height: 50%;
+  border-radius: 1%;
+}
+.signUpImage {
+  margin: 3%;
+  border-radius: 5px;
+  height: 500px;
+}
+.signUpContainer1 {
+  display: flex;
+  flex-direction: row;
+}
+.signUpContainer2 {
+  margin-left: 3%;
+  margin-top: 40px;
+}
+.input {
+  height: 30px;
+  width: 180%;
+  margin-top: 10px;
+}
+input:focus {
+  border: 1px solid #555;
+}
+.loginLink {
+  color: black;
 }
