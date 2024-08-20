@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import "./Signup.css";
+import toast, { Toaster } from "react-hot-toast";
 function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,18 +30,23 @@ function SignUp() {
           budgetLimit,
         }
       );
+      toast.success("User Registered Successfully!");
 
-      alert(response.data.message || "User Registered Successfully");
       console.log("User Registered Successfully", response.data);
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
-      alert(error.response?.data?.message || "Registration Unsuccessful");
+      toast.error(error.response?.data?.message || "Registration Unsuccessful");
       console.error("Registration Error", error);
     }
   };
 
   return (
     <>
+      <div>
+        <Toaster position="top-center" reverseOrder={false} />
+      </div>
       <div className="mainSignUpContainer">
         <div className="SignUpContainer">
           <div className="signUpContainer1">

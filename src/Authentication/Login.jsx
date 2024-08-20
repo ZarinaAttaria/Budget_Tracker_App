@@ -3,6 +3,7 @@ import "../App.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import "./Signup.css";
+import { toast, Toaster } from "react-hot-toast";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post(
         `http://localhost:3000/api/auth/login`,
@@ -19,18 +21,25 @@ function Login() {
           password,
         }
       );
-      localStorage.setItem("token", response.data.token);
-      alert(response.data.message || "Login Successfull");
+
       console.log("Login Successfull", response.data);
-      navigate("/budgetPage");
+      localStorage.setItem("token", response.data.token);
+
+      toast.success(response.data.message || "Login Successful!");
+      setTimeout(() => {
+        navigate("/budgetPage");
+      }, 1000);
     } catch (error) {
-      alert(error.response?.data?.message || "Login Unsuccessful");
+      toast.error(error.response?.data?.message || "Login Unsuccessful");
       console.error("Login Error", error);
     }
   };
 
   return (
     <>
+      <div>
+        <Toaster position="top-center" reverseOrder={false} />
+      </div>
       <div className="mainSignUpContainer">
         <div className="SignUpContainer">
           <div className="signUpContainer1">
