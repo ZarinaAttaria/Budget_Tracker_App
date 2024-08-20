@@ -196,9 +196,18 @@ function BudgetPage() {
           <div className="addContainer">
             <form onSubmit={handleSubmit}>
               <div className="addFormContainer">
-                <h2>Add Budget</h2>
+                <div className="addBudgetTop">
+                  <h2>Add Budget</h2>
+                  <img
+                    src="icons8-cross-50.png"
+                    className="crossIcon"
+                    onClick={toggleAddBudget}
+                  />
+                </div>
+
                 <label>
                   <input
+                    className="addInput"
                     type="text"
                     value={budgetName}
                     onChange={(e) => setBudgetName(e.target.value)}
@@ -207,6 +216,7 @@ function BudgetPage() {
                 </label>
                 <label>
                   <input
+                    className="addInput"
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
@@ -215,13 +225,20 @@ function BudgetPage() {
                 </label>
                 <label>
                   <input
+                    className="addInput"
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     placeholder="Date"
                   />
                 </label>
-                <input type="submit" value={isEditing ? "Update" : "Add"} />
+                <div className="buttonContainer">
+                  <input
+                    type="submit"
+                    className="submitButton"
+                    value={isEditing ? "Update" : "Add"}
+                  />
+                </div>
               </div>
             </form>
           </div>
