@@ -1,0 +1,11 @@
+.budgetChartContainer {
+  background: white;
+  border-radius: 10px;
+  width: 190vh;
+}
+.budgetChartMainContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}

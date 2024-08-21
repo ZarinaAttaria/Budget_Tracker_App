@@ -24,6 +24,7 @@ function Login() {
 
       console.log("Login Successfull", response.data);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", email);
 
       toast.success(response.data.message || "Login Successful!");
       setTimeout(() => {

@@ -1,0 +1,65 @@
+.navbar {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  height: 50px;
+  width: 60px;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-logo {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
+.budgetTrackerLink {
+  text-decoration: none;
+  color: black;
+  margin-top: 15px;
+  font-weight: 500;
+}
+.navbarStart {
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+}
+.email {
+  font-weight: 500;
+}
+.signup {
+  width: 20vh;
+}

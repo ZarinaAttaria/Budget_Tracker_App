@@ -44,6 +44,8 @@ function SignUp() {
 
   return (
     <>
+      {localStorage.removeItem("email")}
+      {localStorage.removeItem("token")}
       <div>
         <Toaster position="top-center" reverseOrder={false} />
       </div>

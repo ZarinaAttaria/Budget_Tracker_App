@@ -146,7 +146,10 @@ const getAllBudget = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    return res.status(200).json({ budgetEntries: user.budgetEntries });
+    return res.status(200).json({
+      budgetEntries: user.budgetEntries,
+      budgetLimit: user.budgetLimit,
+    });
   } catch (error) {
     console.error("Get Budget Entries Error:", error);
     return res.status(500).json({

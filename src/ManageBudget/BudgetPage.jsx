@@ -3,6 +3,7 @@ import "../App.css";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import "./BudgetPage.css";
+import ChartPage from "./ChartPage";
 
 function BudgetPage() {
   const [budget, setBudget] = useState([]);
@@ -12,11 +13,13 @@ function BudgetPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [entryId, setEntryId] = useState("");
   const [filteredBudget, setFilteredBudget] = useState([]);
-  const [filterDate, setFilterDate] = useState("");
+  const today = new Date().toISOString().split("T")[0];
+  const [filterDate, setFilterDate] = useState(today);
   const [isAddBudget, setIsAddBudget] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(1);
+
   const token = localStorage.getItem("token");
 
   const fetchAllBudgetEntries = async () => {
@@ -132,10 +135,13 @@ function BudgetPage() {
         (b) => b.date.split("T")[0] === filterDate
       );
       setFilteredBudget(filterByDate);
+      setCurrentPage(1);
     } else {
       setFilteredBudget(budget);
+      setCurrentPage(1);
     }
   };
+
   const toggleAddBudget = () => {
     setIsAddBudget(!isAddBudget);
     if (!isAddBudget) {
@@ -146,8 +152,25 @@ function BudgetPage() {
       setEntryId("");
     }
   };
-  const toggleDropdown = (id) => {
-    setActiveDropdown(activeDropdown === id ? null : id);
+
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const currentRows = filteredBudget.slice(0, indexOfLastRow);
+
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(filteredBudget.length / rowsPerPage)) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handleRowsPerPageChange = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(1);
   };
 
   return (
@@ -161,7 +184,7 @@ function BudgetPage() {
             <form onSubmit={handleFilterByDate}>
               <label>
                 <input
-                  type="text"
+                  type="date"
                   className="dateInput"
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
@@ -190,34 +213,62 @@ function BudgetPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredBudget.map((b) => (
+              {currentRows.map((b) => (
                 <tr key={b._id}>
                   <td>{b.transactionName}</td>
                   <td>{b.amount}</td>
                   <td>{b.date.split("T")[0]}</td>
-
                   <td>
-                    <div className="actionsDropdown">
-                      <button
-                        className="actionsButton"
-                        onClick={() => toggleDropdown(b._id)}
-                      >
-                        ⋮
-                      </button>
-                      {activeDropdown === b._id && (
-                        <div className="actionsMenu">
-                          <button onClick={() => handleEdit(b)}>Edit</button>
-                          <button onClick={() => handleDelete(b._id)}>
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                    <img src="edit.png" onClick={() => handleEdit(b)} />
+                    <img
+                      src="delete.png"
+                      className="icons"
+                      onClick={() => handleDelete(b._id)}
+                    />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+          <div className="paginationControls">
+            <img
+              src="previous.png"
+              onClick={handlePreviousPage}
+              className={`paginationButton icons ${
+                currentPage === 1 ? "disabled" : ""
+              }`}
+            />
+
+            <select
+              value={rowsPerPage}
+              onChange={handleRowsPerPageChange}
+              className="paginationSelect"
+            >
+              <option value={2}>2</option>
+              <option value={4}>4</option>
+              <option value={6}>6</option>
+              <option value={8}>8</option>
+
+              <option value={10}>10</option>
+            </select>
+
+            <img
+              src="next.png"
+              onClick={handleNextPage}
+              className={`paginationButton icons ${
+                currentPage >= Math.ceil(filteredBudget.length / rowsPerPage)
+                  ? "disabled"
+                  : ""
+              }`}
+            />
+            <div className="paginationInfo">
+              {`${indexOfLastRow - rowsPerPage + 1}-${Math.min(
+                indexOfLastRow,
+                filteredBudget.length
+              )} of ${filteredBudget.length}`}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -264,18 +315,19 @@ function BudgetPage() {
                     placeholder="Date"
                   />
                 </label>
-                <div className="buttonContainer">
-                  <input
-                    type="submit"
-                    className="submitButton"
-                    value={isEditing ? "Update" : "Add"}
-                  />
-                </div>
+                <button
+                  type="submit"
+                  className="addBtn"
+                  onClick={toggleAddBudget}
+                >
+                  {isEditing ? "Update" : "Add"}
+                </button>
               </div>
             </form>
           </div>
         </>
       )}
+      <ChartPage />
     </>
   );
 }
