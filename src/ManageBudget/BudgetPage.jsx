@@ -19,7 +19,6 @@ function BudgetPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(1);
-
   const token = localStorage.getItem("token");
 
   const fetchAllBudgetEntries = async () => {
@@ -47,6 +46,7 @@ function BudgetPage() {
   }, [token]);
 
   const handleSubmit = async (e) => {
+    toggleAddBudget();
     e.preventDefault();
     try {
       if (isEditing) {
@@ -315,11 +315,7 @@ function BudgetPage() {
                     placeholder="Date"
                   />
                 </label>
-                <button
-                  type="submit"
-                  className="addBtn"
-                  onClick={toggleAddBudget}
-                >
+                <button type="submit" className="addBtn">
                   {isEditing ? "Update" : "Add"}
                 </button>
               </div>
