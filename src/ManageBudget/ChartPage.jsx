@@ -72,7 +72,7 @@ const ChartPage = () => {
   return (
     <div className="budgetChartMainContainer">
       <div className="budgetChartContainer">
-        <h2>Budget Analytics</h2>
+        <h2 className="budgetAnalyticsHeading">Budget Analytics</h2>
         <div className="filterOptions">
           <p
             className={`filterOption ${

@@ -18,15 +18,16 @@ function FilterByDate({
             placeholder="Filter By Date"
           />
         </label>
-
-        <input
-          type="submit"
-          value="Filter Records"
-          className="filterRecordButton"
-        />
-        <button onClick={handleResetFilter} className="resetFilterBtn">
-          Reset Filter
-        </button>
+        <div>
+          <input
+            type="submit"
+            value="Filter Records"
+            className="filterRecordButton"
+          />
+          <button onClick={handleResetFilter} className="resetFilterBtn">
+            Reset Filter
+          </button>
+        </div>
       </form>
     </>
   );

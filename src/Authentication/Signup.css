@@ -54,19 +54,21 @@
 }
 @media (min-width: 1300px) {
   .SignUpContainer {
-    width: 85vh;
+    width: 100vh;
   }
 }
 @media (max-width: 768px) {
   .signUpContainer1 {
-    width: 450px;
+    width: 375px;
   }
   .SignUpContainer {
     align-items: center;
-    margin-left: 100px;
-    margin-right: 10px;
+    margin-left: 20px;
   }
   .input {
     width: 100%;
+  }
+  .signUpImage {
+    width: 150px;
   }
 }

@@ -207,3 +207,34 @@
   border-radius: 5px;
   margin-top: 15px;
 }
+@media (max-width: 768px) {
+  .budgetTable {
+    width: 100%;
+    margin: 0;
+  }
+  .budgetContainer1 {
+    margin-left: 20px;
+  }
+  .addBtn {
+    height: 30px;
+    width: 100px;
+    margin: 0;
+  }
+  .filterRecordButton {
+    height: 30px;
+    width: 100px;
+  }
+  .resetFilterBtn {
+    height: 30px;
+    width: 100px;
+  }
+  .dateInput {
+    height: 25px;
+
+    width: 50%;
+    margin-right: 4px;
+  }
+  .icons {
+    margin-left: 5px;
+  }
+}

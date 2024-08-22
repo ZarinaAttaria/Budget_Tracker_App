@@ -42,3 +42,22 @@
   bottom: 0;
   left: 0;
 }
+@media (max-width: 768px) {
+  .budgetChartContainer {
+    width: 85%;
+    margin-left: 20px;
+  }
+  .filterOption,
+  .activeFilter {
+    font-size: 13px;
+  }
+  .budgetAnalyticsHeading {
+    font-size: 20px;
+  }
+  .activeFilter::after {
+    width: 100%;
+  }
+  .filterOptions {
+    gap: 5px;
+  }
+}
