@@ -14,14 +14,11 @@ const ChartPage = () => {
   useEffect(() => {
     const fetchBudgetEntries = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/auth/getAllBudget",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await axios.get("/api/auth/getAllBudget", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const filteredData = filterData(response.data.budgetEntries, filter);
         setBudgetEntries(filteredData);
         setBudgetLimit(response.data.budgetLimit || 0);

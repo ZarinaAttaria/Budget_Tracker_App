@@ -26,14 +26,11 @@ function BudgetPage() {
 
   const fetchAllBudgetEntries = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/auth/getAllBudget`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`/api/auth/getAllBudget`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setBudget(response.data.budgetEntries);
       setFilteredBudget(response.data.budgetEntries);
     } catch (error) {
@@ -54,7 +51,7 @@ function BudgetPage() {
     try {
       if (isEditing) {
         const response = await axios.put(
-          `http://localhost:3000/api/auth/update-budget/${entryId}`,
+          `/api/auth/update-budget/${entryId}`,
           {
             date,
             transactionName: budgetName,
@@ -69,7 +66,7 @@ function BudgetPage() {
         toast.success(response.data.message || "Budget Updated Successfully");
       } else {
         const response = await axios.post(
-          `http://localhost:3000/api/auth/add-budget`,
+          `/api/auth/add-budget`,
           {
             date,
             transactionName: budgetName,
@@ -111,7 +108,7 @@ function BudgetPage() {
   const handleDelete = async (entryId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/auth/delete-budget/${entryId}`,
+        `/api/auth/delete-budget/${entryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

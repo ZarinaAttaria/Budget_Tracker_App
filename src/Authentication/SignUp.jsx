@@ -19,17 +19,14 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `http://localhost:3000/api/auth/register`,
-        {
-          firstName,
-          lastName,
-          email,
-          password,
-          confirmPassword,
-          budgetLimit,
-        }
-      );
+      const response = await axios.post(`/api/auth/register`, {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        budgetLimit,
+      });
       toast.success("User Registered Successfully!");
 
       console.log("User Registered Successfully", response.data);
