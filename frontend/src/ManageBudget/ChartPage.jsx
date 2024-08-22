@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { startOfMonth, subMonths, endOfMonth, format } from "date-fns";
 import "./ChartPage.css";
 
-const ChartPage = () => {
+const ChartPage = ({ isAddBudget, isEditing }) => {
   const [budgetEntries, setBudgetEntries] = useState([]);
   const [budgetLimit, setBudgetLimit] = useState(0);
   const [filter, setFilter] = useState("currentMonth");
@@ -33,7 +33,7 @@ const ChartPage = () => {
     };
 
     fetchBudgetEntries();
-  }, [filter]);
+  }, [filter, isAddBudget, isEditing]);
 
   const filterData = (data, filter) => {
     const today = new Date();

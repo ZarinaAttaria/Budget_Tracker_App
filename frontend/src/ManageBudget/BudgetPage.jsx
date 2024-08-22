@@ -237,7 +237,7 @@ function BudgetPage() {
           />
         </>
       )}
-      <ChartPage />
+      <ChartPage isAddBudget={isAddBudget} isEditing={isEditing} />
     </>
   );
 }
