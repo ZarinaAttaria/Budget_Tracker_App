@@ -9,16 +9,17 @@ function FilterByDate({
   return (
     <>
       <form onSubmit={handleFilterByDate}>
-        <label>
-          <input
-            type="date"
-            className="dateInput"
-            value={filterDate}
-            onChange={(e) => setFilterDate(e.target.value)}
-            placeholder="Filter By Date"
-          />
-        </label>
-        <div>
+        <div className="btnsContainer">
+          <label>
+            <input
+              type="date"
+              className="dateInput"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              placeholder="Filter By Date"
+            />
+          </label>
+
           <input
             type="submit"
             value="Filter Records"

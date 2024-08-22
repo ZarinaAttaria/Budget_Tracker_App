@@ -54,17 +54,16 @@
   height: 50px;
   width: 100px;
   background-color: rgb(231, 184, 15);
-
+  margin-top: 15px;
   border: none;
   color: black;
   border-radius: 5px;
-  margin-top: 15px;
 }
 .dateInput {
   height: 45px;
+  margin-top: 15px;
 
-  width: 50%;
-  margin-right: 4px;
+  width: 100%;
 }
 .addContainer {
   position: fixed;
@@ -199,13 +198,18 @@
   margin-left: 22px;
 }
 .resetFilterBtn {
-  height: 40px;
+  height: 50px;
   width: 100px;
   background-color: red;
   border: none;
   color: white;
   border-radius: 5px;
   margin-top: 15px;
+}
+.btnsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
 }
 @media (max-width: 768px) {
   .budgetTable {
@@ -214,27 +218,31 @@
   }
   .budgetContainer1 {
     margin-left: 20px;
+    width: 90%;
   }
   .addBtn {
-    height: 30px;
+    height: 40px;
     width: 100px;
-    margin: 0;
   }
   .filterRecordButton {
-    height: 30px;
-    width: 100px;
+    height: 40px;
+    width: 95px;
   }
   .resetFilterBtn {
     height: 30px;
     width: 100px;
   }
   .dateInput {
-    height: 25px;
+    height: 28px;
 
-    width: 50%;
-    margin-right: 4px;
+    width: 100%;
   }
   .icons {
     margin-left: 5px;
+  }
+  .btnsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0%;
   }
 }

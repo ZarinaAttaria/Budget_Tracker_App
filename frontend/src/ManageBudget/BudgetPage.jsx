@@ -57,8 +57,7 @@ function BudgetPage() {
     try {
       if (isEditing) {
         const response = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/auth/update-budget/${entryId}` ||
-            `/auth/update-budget/${entryId}`,
+          `${import.meta.env.VITE_API_URL}/api/auth/update-budget/${entryId}`,
           {
             date,
             transactionName: budgetName,
@@ -73,7 +72,7 @@ function BudgetPage() {
         toast.success(response.data.message || "Budget Updated Successfully");
       } else {
         const response = await axios.post(
-          `/api/auth/add-budget`,
+          `${import.meta.env.VITE_API_URL}/api/auth/add-budget`,
           {
             date,
             transactionName: budgetName,
