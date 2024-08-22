@@ -20,7 +20,7 @@ function BudgetPage() {
   const [isAddBudget, setIsAddBudget] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   const token = localStorage.getItem("token");
 
   const fetchAllBudgetEntries = async () => {

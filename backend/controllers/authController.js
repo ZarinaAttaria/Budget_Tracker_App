@@ -104,14 +104,9 @@ const addBudget = async (req, res) => {
 
     const numericAmount = Number(amount);
 
-    const totalAmount = user.budgetEntries.reduce(
-      (sum, entry) => sum + entry.amount,
-      0
-    );
-
-    if (totalAmount + numericAmount > user.budgetLimit) {
-      return res.status(400).json({ message: "Budget limit exceeded!" });
-    }
+    const totalAmount =
+      user.budgetEntries.reduce((sum, entry) => sum + entry.amount, 0) +
+      numericAmount;
 
     const budgetEntry = {
       date,
@@ -122,7 +117,17 @@ const addBudget = async (req, res) => {
     user.budgetEntries.push(budgetEntry);
     await user.save();
 
-    res.status(200).json({ budgetEntries: user.budgetEntries });
+    if (totalAmount > user.budgetLimit) {
+      return res.status(200).json({
+        message: "Budget entry added, but limit exceeded!",
+        budgetEntries: user.budgetEntries,
+      });
+    }
+
+    res.status(200).json({
+      message: "Budget entry added successfully",
+      budgetEntries: user.budgetEntries,
+    });
   } catch (error) {
     console.error("Add Budget Entry Error:", error);
     res

@@ -73,13 +73,28 @@ const ChartPage = () => {
       <div className="budgetChartContainer">
         <h2>Budget Analytics</h2>
         <div className="filterOptions">
-          <p className="filterOption" onClick={() => setFilter("lastMonth")}>
+          <p
+            className={`filterOption ${
+              filter === "lastMonth" ? "activeFilter" : ""
+            }`}
+            onClick={() => setFilter("lastMonth")}
+          >
             LAST MONTH
           </p>
-          <p className="filterOption" onClick={() => setFilter("last6Months")}>
+          <p
+            className={`filterOption ${
+              filter === "last6Months" ? "activeFilter" : ""
+            }`}
+            onClick={() => setFilter("last6Months")}
+          >
             LAST 6 MONTHS
           </p>
-          <p className="filterOption" onClick={() => setFilter("last12Months")}>
+          <p
+            className={`filterOption ${
+              filter === "last12Months" ? "activeFilter" : ""
+            }`}
+            onClick={() => setFilter("last12Months")}
+          >
             LAST 12 MONTHS
           </p>
         </div>

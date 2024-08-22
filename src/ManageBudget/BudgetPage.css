@@ -155,17 +155,43 @@
 }
 .paginationControls {
   display: flex;
+
   align-items: flex-end;
   justify-content: flex-end;
-  margin-right: 35px;
-  margin-bottom: 25px;
+  margin: 20px;
 }
-.disabled {
+
+.paginationButton {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.paginationButton.disabled {
   filter: grayscale(100%);
   cursor: not-allowed;
   opacity: 0.5;
 }
+
 .paginationSelect {
-  background-color: rgb(225, 220, 220);
-  border: none;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 16px;
+  color: #333;
+
+  cursor: pointer;
+}
+
+.paginationSelect:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.2);
+}
+
+.paginationInfo {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 7px;
 }
