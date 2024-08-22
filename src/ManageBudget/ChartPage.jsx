@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import BudgetLineChart from "./BudgetLineChart";
+import dayjs from "dayjs";
+import { startOfMonth, subMonths, endOfMonth, format } from "date-fns";
 import "./ChartPage.css";
 
 const ChartPage = () => {
   const [budgetEntries, setBudgetEntries] = useState([]);
   const [budgetLimit, setBudgetLimit] = useState(0);
-  const [filter, setFilter] = useState("lastMonth");
+  const [filter, setFilter] = useState("currentMonth");
 
   useEffect(() => {
     const fetchBudgetEntries = async () => {
@@ -33,31 +35,35 @@ const ChartPage = () => {
   }, [filter]);
 
   const filterData = (data, filter) => {
-    const now = new Date();
-    let filteredData = [];
+    const today = new Date();
+    let startDate;
 
     switch (filter) {
       case "lastMonth":
-        filteredData = data.filter(
-          (entry) =>
-            new Date(entry.date) > new Date(now.setMonth(now.getMonth() - 1))
-        );
+        startDate = startOfMonth(subMonths(today, 1));
         break;
       case "last6Months":
-        filteredData = data.filter(
-          (entry) =>
-            new Date(entry.date) > new Date(now.setMonth(now.getMonth() - 6))
-        );
+        startDate = startOfMonth(subMonths(today, 6));
         break;
       case "last12Months":
-        filteredData = data.filter(
-          (entry) =>
-            new Date(entry.date) > new Date(now.setMonth(now.getMonth() - 12))
-        );
+        startDate = startOfMonth(subMonths(today, 12));
         break;
+      case "currentMonth":
       default:
-        filteredData = data;
+        startDate = startOfMonth(today);
+        break;
     }
+
+    const filteredData = data
+      .filter((entry) => {
+        const entryDate = new Date(entry.date);
+        return entryDate >= startDate && entryDate <= endOfMonth(today);
+      })
+      .map((entry) => ({
+        ...entry,
+        date: format(new Date(entry.date), "yyyy-MM-dd"),
+      }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     return filteredData;
   };
@@ -67,9 +73,15 @@ const ChartPage = () => {
       <div className="budgetChartContainer">
         <h2>Budget Analytics</h2>
         <div className="filterOptions">
-          <p onClick={() => setFilter("lastMonth")}>Last Month</p>
-          <p onClick={() => setFilter("last6Months")}>Last 6 Months</p>
-          <p onClick={() => setFilter("last12Months")}>Last 12 Months</p>
+          <p className="filterOption" onClick={() => setFilter("lastMonth")}>
+            LAST MONTH
+          </p>
+          <p className="filterOption" onClick={() => setFilter("last6Months")}>
+            LAST 6 MONTHS
+          </p>
+          <p className="filterOption" onClick={() => setFilter("last12Months")}>
+            LAST 12 MONTHS
+          </p>
         </div>
 
         <BudgetLineChart

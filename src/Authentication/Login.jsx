@@ -46,7 +46,7 @@ function Login() {
           <div className="signUpContainer1">
             <img src="signUpImage.png" className="signUpImage" />
             <div className="signUpContainer2">
-              <h1>Login</h1>
+              <h1>Sign in</h1>
               <form onSubmit={handleSubmit}>
                 <div className="signUpForm">
                   <label>

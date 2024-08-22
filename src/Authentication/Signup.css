@@ -20,7 +20,7 @@
   flex-direction: column;
   margin-top: 3%;
   background-color: white;
-  width: 110vh;
+  width: 120vh;
   height: 50%;
   border-radius: 1%;
 }
@@ -41,9 +41,13 @@
   height: 30px;
   width: 180%;
   margin-top: 10px;
+  border: 1px solid grey;
 }
-input:focus {
-  border: 1px solid #555;
+
+.input:focus {
+  border: 1px solid grey;
+  box-shadow: 0 0 5px grey;
+  outline: none;
 }
 .loginLink {
   color: black;

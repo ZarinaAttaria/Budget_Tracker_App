@@ -4,6 +4,8 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import "./BudgetPage.css";
 import ChartPage from "./ChartPage";
+import Pagination from "./Pagination";
+import Add_Update_Budget from "./Add_Update_Budget";
 
 function BudgetPage() {
   const [budget, setBudget] = useState([]);
@@ -231,96 +233,31 @@ function BudgetPage() {
             </tbody>
           </table>
 
-          <div className="paginationControls">
-            <img
-              src="previous.png"
-              onClick={handlePreviousPage}
-              className={`paginationButton icons ${
-                currentPage === 1 ? "disabled" : ""
-              }`}
-            />
-
-            <select
-              value={rowsPerPage}
-              onChange={handleRowsPerPageChange}
-              className="paginationSelect"
-            >
-              <option value={2}>2</option>
-              <option value={4}>4</option>
-              <option value={6}>6</option>
-              <option value={8}>8</option>
-
-              <option value={10}>10</option>
-            </select>
-
-            <img
-              src="next.png"
-              onClick={handleNextPage}
-              className={`paginationButton icons ${
-                currentPage >= Math.ceil(filteredBudget.length / rowsPerPage)
-                  ? "disabled"
-                  : ""
-              }`}
-            />
-            <div className="paginationInfo">
-              {`${indexOfLastRow - rowsPerPage + 1}-${Math.min(
-                indexOfLastRow,
-                filteredBudget.length
-              )} of ${filteredBudget.length}`}
-            </div>
-          </div>
+          <Pagination
+            handlePreviousPage={handlePreviousPage}
+            handleNextPage={handleNextPage}
+            handleRowsPerPageChange={handleRowsPerPageChange}
+            currentPage={currentPage}
+            rowsPerPage={rowsPerPage}
+            filteredBudget={filteredBudget}
+            indexOfLastRow={indexOfLastRow}
+          />
         </div>
       </div>
 
       {isAddBudget && (
         <>
-          <div className="darkBackground" onClick={toggleAddBudget}></div>
-          <div className="addContainer">
-            <form onSubmit={handleSubmit}>
-              <div className="addFormContainer">
-                <div className="addBudgetTop">
-                  <h2>{isEditing ? "Update Budget" : "Add Budget"}</h2>
-                  <img
-                    src="icons8-cross-50.png"
-                    className="crossIcon"
-                    onClick={toggleAddBudget}
-                  />
-                </div>
-
-                <label>
-                  <input
-                    className="addInput"
-                    type="text"
-                    value={budgetName}
-                    onChange={(e) => setBudgetName(e.target.value)}
-                    placeholder="Name"
-                  />
-                </label>
-                <label>
-                  <input
-                    className="addInput"
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    placeholder="Amount"
-                    min="0"
-                  />
-                </label>
-                <label>
-                  <input
-                    className="addInput"
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    placeholder="Date"
-                  />
-                </label>
-                <button type="submit" className="addBtn">
-                  {isEditing ? "Update" : "Add"}
-                </button>
-              </div>
-            </form>
-          </div>
+          <Add_Update_Budget
+            toggleAddBudget={toggleAddBudget}
+            setBudgetName={setBudgetName}
+            setAmount={setAmount}
+            setDate={setDate}
+            handleSubmit={handleSubmit}
+            isEditing={isEditing}
+            budgetName={budgetName}
+            amount={amount}
+            date={date}
+          />
         </>
       )}
       <ChartPage />
