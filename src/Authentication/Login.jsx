@@ -14,10 +14,13 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`/api/auth/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `http://localhost:3000/api/auth/login` || `/api/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
 
       console.log("Login Successfull", response.data);
       localStorage.setItem("token", response.data.token);
