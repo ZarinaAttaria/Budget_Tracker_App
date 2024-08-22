@@ -15,7 +15,7 @@ const ChartPage = () => {
     const fetchBudgetEntries = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/auth/getAllBudget" ||
+          `${import.meta.env.VITE_API_URL}/api/auth/getAllBudget` ||
             "/api/auth/getAllBudget",
           {
             headers: {

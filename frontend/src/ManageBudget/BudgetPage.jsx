@@ -29,7 +29,7 @@ function BudgetPage() {
   const fetchAllBudgetEntries = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/auth/getAllBudget` ||
+        `${import.meta.env.VITE_API_URL}/api/auth/getAllBudget` ||
           `/api/auth/getAllBudget`,
         {
           headers: {
@@ -57,7 +57,7 @@ function BudgetPage() {
     try {
       if (isEditing) {
         const response = await axios.put(
-          `http://localhost:3000/api/auth/update-budget/${entryId}` ||
+          `${import.meta.env.VITE_API_URL}/api/auth/update-budget/${entryId}` ||
             `/auth/update-budget/${entryId}`,
           {
             date,
@@ -115,7 +115,7 @@ function BudgetPage() {
   const handleDelete = async (entryId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/auth/delete-budget/${entryId}` ||
+        `${import.meta.env.VITE_API_URL}/api/auth/delete-budget/${entryId}` ||
           `/api/auth/delete-budget/${entryId}`,
         {
           headers: {
