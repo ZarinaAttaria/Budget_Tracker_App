@@ -186,23 +186,31 @@ const updateBudget = async (req, res) => {
     if (!budgetEntry) {
       return res.status(400).json({ message: "Budget entry not found" });
     }
+
     if (date) budgetEntry.date = date;
     if (transactionName) budgetEntry.transactionName = transactionName;
-    if (amount) budgetEntry.amount = amount;
+    if (amount !== undefined) budgetEntry.amount = Number(amount);
 
-    const numericAmount = Number(amount);
     const totalAmount = user.budgetEntries.reduce(
       (sum, entry) => sum + entry.amount,
       0
     );
-    if (totalAmount + numericAmount > user.budgetLimit) {
-      return res.status(400).json({ message: "Budget limit exceeded!" });
-    }
 
     await user.save();
-    res
-      .status(200)
-      .json({ message: "Budget updated successfully", budgetEntry });
+
+    if (totalAmount > user.budgetLimit) {
+      return res.status(200).json({
+        message: "Budget updated successfully, but limit exceeded!",
+        budgetEntry,
+        totalAmount,
+      });
+    }
+
+    res.status(200).json({
+      message: "Budget updated successfully",
+      budgetEntry,
+      totalAmount,
+    });
   } catch (error) {
     console.error("Update Budget Entry Error:", error);
     res.status(500).json({
