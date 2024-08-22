@@ -21,6 +21,7 @@ function BudgetPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [isFilterByDate, setIsFilterByDate] = useState(false);
   const token = localStorage.getItem("token");
 
   const fetchAllBudgetEntries = async () => {
@@ -133,6 +134,7 @@ function BudgetPage() {
   const handleFilterByDate = (e) => {
     e.preventDefault();
     if (filterDate) {
+      setIsFilterByDate(true);
       const filterByDate = budget.filter(
         (b) => b.date.split("T")[0] === filterDate
       );
@@ -174,7 +176,9 @@ function BudgetPage() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setCurrentPage(1);
   };
-
+  const handleResetFilter = () => {
+    fetchAllBudgetEntries();
+  };
   return (
     <>
       <div>
@@ -199,10 +203,18 @@ function BudgetPage() {
                 value="Filter Records"
                 className="filterRecordButton"
               />
+              <button onClick={handleResetFilter} className="resetFilterBtn">
+                Reset Filter
+              </button>
             </form>
+
             <button onClick={toggleAddBudget} className="addBtn">
               Add Budget
             </button>
+          </div>
+          <div className="filteredItems">
+            {isFilterByDate &&
+              `showing ${filteredBudget.length} out of ${budget.length}`}
           </div>
 
           <table className="budgetTable">
@@ -232,7 +244,6 @@ function BudgetPage() {
               ))}
             </tbody>
           </table>
-
           <Pagination
             handlePreviousPage={handlePreviousPage}
             handleNextPage={handleNextPage}

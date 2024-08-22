@@ -39,7 +39,7 @@
 
   flex-direction: row;
   justify-content: space-between;
-  margin: 35px;
+  margin: 25px;
 }
 .addBtn {
   height: 50px;
@@ -194,4 +194,16 @@
   font-size: 16px;
   color: #333;
   margin-bottom: 7px;
+}
+.filteredItems {
+  margin-left: 22px;
+}
+.resetFilterBtn {
+  height: 40px;
+  width: 100px;
+  background-color: red;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  margin-top: 15px;
 }
