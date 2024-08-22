@@ -6,6 +6,8 @@ import "./BudgetPage.css";
 import ChartPage from "./ChartPage";
 import Pagination from "./Pagination";
 import Add_Update_Budget from "./Add_Update_Budget";
+import FilterByDate from "./FilterByDate";
+import BudgetTable from "./BudgetTable";
 
 function BudgetPage() {
   const [budget, setBudget] = useState([]);
@@ -190,27 +192,12 @@ function BudgetPage() {
       <div className="mainBugetContainer">
         <div className="budgetContainer1">
           <div className="budgetContainerTop">
-            <form onSubmit={handleFilterByDate}>
-              <label>
-                <input
-                  type="date"
-                  className="dateInput"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
-                  placeholder="Filter By Date"
-                />
-              </label>
-
-              <input
-                type="submit"
-                value="Filter Records"
-                className="filterRecordButton"
-              />
-              <button onClick={handleResetFilter} className="resetFilterBtn">
-                Reset Filter
-              </button>
-            </form>
-
+            <FilterByDate
+              handleFilterByDate={handleFilterByDate}
+              setFilterDate={setFilterDate}
+              handleResetFilter={handleResetFilter}
+              filterDate={filterDate}
+            />
             <button onClick={toggleAddBudget} className="addBtn">
               Add Budget
             </button>
@@ -219,34 +206,11 @@ function BudgetPage() {
             {isFilterByDate &&
               `showing ${filteredBudget.length} out of ${budget.length}`}
           </div>
-
-          <table className="budgetTable">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentRows.map((b) => (
-                <tr key={b._id}>
-                  <td>{b.transactionName}</td>
-                  <td>{b.amount}</td>
-                  <td>{b.date.split("T")[0]}</td>
-                  <td>
-                    <img src="edit.png" onClick={() => handleEdit(b)} />
-                    <img
-                      src="delete.png"
-                      className="icons"
-                      onClick={() => handleDelete(b._id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <BudgetTable
+            currentRows={currentRows}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
           <Pagination
             handlePreviousPage={handlePreviousPage}
             handleNextPage={handleNextPage}
