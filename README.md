@@ -39,18 +39,18 @@ Welcome to the Budget Tracker app! This application allows users to manage their
 
 To run this app locally, follow these steps:
 
-1. Clone the repository:
+1. **Clone the repository**:
 
    ```bash
    git clone https://github.com/ZarinaAttaria/Budget_Tracker_App.git
    ```
 
-2. Execute the frontend:
+2. **Execute the frontend**:
    cd frontend,
    npm install,
    npm run dev
 
-3. Execute the backend:
+3. **Execute the backend**:
    cd backend,
    npm install,
    npm start
