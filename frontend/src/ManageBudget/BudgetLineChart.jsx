@@ -40,6 +40,11 @@ const BudgetLineChart = ({ budgetEntries, budgetLimit }) => {
   const labels = Object.keys(aggregatedData);
   const data = Object.values(aggregatedData);
 
+  const minDataValue = Math.min(...data);
+  const maxDataValue = Math.max(...data, budgetLimit);
+
+  const minY = Math.max(0, minDataValue);
+
   const chartData = {
     labels,
     datasets: [
@@ -74,7 +79,8 @@ const BudgetLineChart = ({ budgetEntries, budgetLimit }) => {
     },
     scales: {
       y: {
-        beginAtZero: true,
+        min: minY,
+        suggestedMax: maxDataValue * 1.1,
       },
     },
   };

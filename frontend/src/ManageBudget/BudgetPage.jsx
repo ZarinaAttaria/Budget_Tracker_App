@@ -22,7 +22,7 @@ function BudgetPage() {
   const [isAddBudget, setIsAddBudget] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(3);
+  const [rowsPerPage, setRowsPerPage] = useState(2);
   const [isFilterByDate, setIsFilterByDate] = useState(false);
   const token = localStorage.getItem("token");
 
@@ -142,6 +142,7 @@ function BudgetPage() {
       const filterByDate = budget.filter(
         (b) => b.date.split("T")[0] === filterDate
       );
+
       setFilteredBudget(filterByDate);
       setCurrentPage(1);
     } else {
@@ -202,8 +203,10 @@ function BudgetPage() {
             </button>
           </div>
           <div className="filteredItems">
-            {isFilterByDate &&
-              `showing ${filteredBudget.length} out of ${budget.length}`}
+            {currentRows.length === 0
+              ? ""
+              : isFilterByDate &&
+                `showing ${filteredBudget.length} out of ${budget.length}`}
           </div>
           <BudgetTable
             currentRows={currentRows}

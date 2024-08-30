@@ -42,7 +42,7 @@
   margin: 25px;
 }
 .addBtn {
-  height: 50px;
+  height: 40px;
   width: 150px;
   background-color: black;
   border: none;
@@ -51,16 +51,17 @@
   margin-top: 15px;
 }
 .filterRecordButton {
-  height: 50px;
+  height: 40px;
   width: 100px;
   background-color: rgb(231, 184, 15);
   margin-top: 15px;
   border: none;
   color: black;
+  margin-left: 2%;
   border-radius: 5px;
 }
 .dateInput {
-  height: 45px;
+  height: 35px;
   margin-top: 15px;
 
   width: 100%;
@@ -91,7 +92,7 @@
 }
 .addInput {
   height: 40px;
-
+  padding-left: 8px;
   width: 100%;
   margin-bottom: 8px;
 }
@@ -198,18 +199,22 @@
   margin-left: 22px;
 }
 .resetFilterBtn {
-  height: 50px;
-  width: 100px;
+  height: 40px;
+  width: 110px;
   background-color: red;
   border: none;
   color: white;
+  margin-left: 0%;
   border-radius: 5px;
   margin-top: 15px;
 }
 .btnsContainer {
   display: flex;
   flex-direction: row;
-  gap: 2%;
+  gap: 3%;
+}
+.noRecordFound {
+  text-align: center;
 }
 @media (max-width: 768px) {
   .budgetTable {
@@ -224,13 +229,15 @@
     height: 40px;
     width: 100px;
   }
+
   .filterRecordButton {
-    height: 40px;
+    height: 35px;
+
     width: 95px;
   }
   .resetFilterBtn {
     height: 30px;
-    width: 100px;
+    width: 95px;
   }
   .dateInput {
     height: 28px;
