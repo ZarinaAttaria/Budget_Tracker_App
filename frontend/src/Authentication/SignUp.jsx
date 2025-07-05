@@ -18,28 +18,53 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Client-side validation
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords don't match");
+      return;
+    }
+
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/register` ||
-          `/api/auth/register`,
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
         {
           firstName,
           lastName,
           email,
           password,
           confirmPassword,
-          budgetLimit,
+          budgetLimit: budgetLimit || 0,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-      toast.success("User Registered Successfully!");
 
-      console.log("User Registered Successfully", response.data);
+      toast.success("User Registered Successfully!");
+      console.log("Registration Success:", response.data);
+
       setTimeout(() => {
         navigate("/login");
       }, 1000);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Registration Unsuccessful");
-      console.error("Registration Error", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Registration failed. Please try again.";
+      toast.error(errorMessage);
+      console.error("Registration Error Details:", {
+        message: error.message,
+        response: error.response?.data,
+        stack: error.stack,
+      });
     }
   };
 

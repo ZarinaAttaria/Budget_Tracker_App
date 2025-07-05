@@ -17,9 +17,20 @@ const registerController = async (req, res) => {
       confirmPassword,
       budgetLimit,
     } = req.body;
-    console.log("Received data:", req.body);
+
+    // Add validation for required fields
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords don't match" });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
     }
 
     let user = await userModel.findOne({ email });
@@ -36,7 +47,7 @@ const registerController = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      budgetLimit,
+      budgetLimit: budgetLimit || 0, // default to 0 if not provided
     });
 
     await user.save();
@@ -47,7 +58,11 @@ const registerController = async (req, res) => {
     res.status(201).json({ token });
   } catch (error) {
     console.error("Registration Error:", error);
-    res.status(500).json({ error: "Failed to Login", details: error.message });
+    res.status(500).json({
+      error: "Registration failed",
+      message: error.message,
+      stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+    });
   }
 };
 
